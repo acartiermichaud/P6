@@ -310,6 +310,18 @@ li:hover,
 	margin-top: -10px;
 }
 
+#login .hidden-error-message {
+	display: none;
+}
+
+#login .display-error-message {
+	display: block; 
+	color: red;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 500;
+}
+
 
 /* Footer */
 footer nav ul {
