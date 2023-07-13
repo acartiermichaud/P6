@@ -1,10 +1,3 @@
-// Global variables *****************************************
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4"
-const authorizedEmail = "sophie.bluel@test.tld"
-const authorizedPwd = "S0phie"
-
-
-
 // Functions ***********************************************
 
 // Adding EventListener in login form
@@ -31,16 +24,27 @@ async function loginFormSetting () {
             body: loginJson
         })
 
-        let result = await response.json();
-
-        if (result.message === "user not found") {
+        if (response.status !== 200) {
             let errorContener = document.getElementById("error-message")
+
+            if (errorContener.firstChild) {
+                errorContener.removeChild(errorContener.firstChild)
+            }
+            
             let errorMessage = document.createTextNode("Erreur dans l’identifiant ou le mot de passe.")
             errorContener.appendChild(errorMessage)
             errorContener.classList.remove("hidden-error-message")
             errorContener.classList.add("display-error-message")
         }
         else {
+            let result = await response.json();
+            const token = result.token
+
+            // Local storage of token
+            tokenJson = JSON.stringify(token);
+            console.log(tokenJson)
+            window.localStorage.setItem("token", tokenJson);
+
             window.location.href="./index.html"
         }
     })

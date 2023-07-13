@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "Backend",
+			"problemMatcher": [],
+			"label": "npm: start - Backend",
+			"detail": "node server"
+		},
+		{
+			"type": "npm",
+			"script": "test",
+			"path": "Backend",
+			"group": "test",
+			"problemMatcher": [],
+			"label": "npm: test - Backend",
+			"detail": "echo \"Error: no test specified\" && exit 1"
+		}
+	]
+}

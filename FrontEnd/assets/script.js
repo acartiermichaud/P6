@@ -1,9 +1,12 @@
 // Global variables *****************************************
 let worksJson = null
-let categoriesJson = null
 let works = ""
+
 let categories = ""
+
 let filterId = 0
+
+let token = null
 
 
 
@@ -14,8 +17,8 @@ async function worksRecovery () {
     worksJson = window.localStorage.getItem("works");
 
     if (worksJson === null) {
-        const worksresponse = await fetch("http://localhost:5678/api/works")
-        works = await worksresponse.json()
+        const worksResponse = await fetch("http://localhost:5678/api/works")
+        works = await worksResponse.json()
 
         // Local storage of works
         worksJson = JSON.stringify(works);
@@ -76,19 +79,8 @@ function filtersStyleUpdate(id) {
 async function filtersDisplay () {
 
     // Recovery of categories
-    categoriesJson = window.localStorage.getItem("categories");
-
-    if (categoriesJson === null) {
-        const categoriesresponse = await fetch("http://localhost:5678/api/categories")
-        categories = await categoriesresponse.json()
-
-        // Local storage of categories
-        categoriesJson = JSON.stringify(categories);
-        window.localStorage.setItem("categories", categoriesJson);
-    }
-    else {
-        categories = JSON.parse(categoriesJson);
-    }
+    const categoriesResponse = await fetch("http://localhost:5678/api/categories")
+    categories = await categoriesResponse.json()
 
     // Creation of filters
     let filtersContener = document.querySelector(".filters-contener")
@@ -97,6 +89,7 @@ async function filtersDisplay () {
         let filter = document.createElement("button")
         filter.setAttribute("id", "filter_"+i)
         filter.classList.add("filter")
+        filter.classList.add("pointer")
         filtersContener.appendChild(filter)
 
         // Default values for the 1st filter
@@ -124,13 +117,81 @@ async function filtersDisplay () {
 
 
 
+// Recovery of token
+function tokenRecovery () {
+    const tokenJson = window.localStorage.getItem("token");
+    console.log(tokenJson)
+
+    if (tokenJson !== null) {
+        token = JSON.parse(tokenJson);
+    }
+    // else {
+    //     token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4"
+    // }
+}
+
+
+
+// Clear token
+function clearToken() {
+    window.localStorage.removeItem("token")
+}
+
+
+
+// Display of the edition mode
+function editionModeDisplay () {
+
+    // Display of the edition mode bar
+    let editionBar = document.querySelector(".edition-bar")
+    editionBar.classList.add("edition-bar-display")
+    editionBar.innerHTML = `
+        <p><i class="fa-regular fa-pen-to-square"></i>Mode édition</p>
+		<button class="edition-bar-button">publier les changements</button>`
+
+    // Display of the introduction edition button
+    let introButtonContener = document.querySelector(".button-intro-edition-contener")
+    introButtonContener.classList.add("button-intro-edition-contener-display")
+    introButtonContener.innerHTML = `
+        <button id="intro-edition" class="edition-button pointer"><i class="fa-regular fa-pen-to-square"></i>modifier</button>`
+
+    // Display of the portfolio edition button
+    let portfolioButtonContener = document.querySelector(".button-portfolio-edition-contener")
+    portfolioButtonContener.classList.add("button-portfolio-edition-contener-display")
+    portfolioButtonContener.innerHTML = `
+        <button id="portfolio-edition" class="edition-button pointer"><i class="fa-regular fa-pen-to-square"></i>modifier</button>`
+
+    // Hidden of the login link
+    let loginLink = document.querySelector(".login-link")
+    loginLink.classList.add("login-link-hidden")
+
+    // Display of the logout link
+    let logoutLink = document.querySelector(".logout-link")
+    logoutLink.classList.add("logout-link-display")
+    logoutLink.addEventListener ("click", () => {
+        console.log("clear token")
+        clearToken()
+    })
+}
+
+
+
 // Main ****************************************************
+
+// Recovery of token
+tokenRecovery () 
+
+if (token === null) {
+    // Display of category filters
+    filtersDisplay()
+}
+else {
+    // Display of the edition mode
+    editionModeDisplay ()
+}
 
 // Recovery of works
 worksRecovery()
 
 // Display of works in HTML page
 worksDisplay(filterId)
-
-// Display of category filters
-filtersDisplay()
