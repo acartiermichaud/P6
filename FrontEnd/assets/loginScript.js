@@ -42,7 +42,6 @@ async function loginFormSetting () {
 
             // Local storage of token
             tokenJson = JSON.stringify(token);
-            console.log(tokenJson)
             window.localStorage.setItem("token", tokenJson);
 
             window.location.href="./index.html"

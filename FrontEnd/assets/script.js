@@ -120,14 +120,10 @@ async function filtersDisplay () {
 // Recovery of token
 function tokenRecovery () {
     const tokenJson = window.localStorage.getItem("token");
-    console.log(tokenJson)
 
     if (tokenJson !== null) {
         token = JSON.parse(tokenJson);
     }
-    // else {
-    //     token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4"
-    // }
 }
 
 
@@ -136,6 +132,85 @@ function tokenRecovery () {
 function clearToken() {
     window.localStorage.removeItem("token")
 }
+
+
+
+// Close the modal
+function closeModal() {
+    let modal = document.getElementById("modal")
+    modal.classList.remove("modal-display")
+    modal.classList.add("modal-hidden")
+    modal.setAttribute("aria-hidden", "true")
+    modal.removeAttribute("aria-modal")
+    modal.removeEventListener("click",(event))
+    modal.innerHTML = ``
+}
+
+
+
+// Open the modal
+function openModal() {
+    let modal = document.getElementById("modal")
+    modal.classList.remove("modal-hidden")
+    modal.classList.add("modal-display")
+    modal.removeAttribute("aria-hidden")
+    modal.setAttribute("aria-modal", "true")
+    modal.innerHTML = `
+        <div class="modal-contener">
+            <div class="contener-button">
+                <button class="modal-close-button pointer"><i class="fa-solid fa-xmark fa-xl"></i></button>
+            </div>
+			<h3 class="modal-title">Galerie photo</h3>
+            <div id="images-contener"></div>
+            <button type="submit" class="modal-button">Ajouter une photo</button>
+            <a class="gallery-delete-link pointer">Supprimer la galerie</a>
+		</div>`
+    
+    // Recovery of works' images
+    let imagesContener = document.getElementById("images-contener")
+    if (works !== "") {
+        for (let i = 0; i < works.length; i++) {
+            let figure = document.createElement("figure")
+            figure.classList.add("modal-figure")
+            imagesContener.appendChild(figure)
+
+            let img = document.createElement("img")
+            img.src = works[i].imageUrl
+            img.alt = works[i].title
+            img.classList.add("modal-image")
+            figure.appendChild(img)
+
+            let figcaption = document.createElement("figcaption")
+            figcaption.classList.add("modal-text-image")
+            figure.appendChild(figcaption)
+            let textFigure = document.createTextNode("éditer")
+            figcaption.appendChild(textFigure)
+
+            let iconsContener = document.createElement("div")
+            iconsContener.classList.add("icons-contener")
+            figure.appendChild(iconsContener)
+            iconsContener.innerHTML = `
+                <i class="fa-solid fa-arrows-up-down-left-right fa-xs"></i>
+                <i class="fa-solid fa-trash-can fa-xs"></i>`
+        }
+    }
+
+    modal.addEventListener ("click", (event) => {
+        event.preventDefault()
+        closeModal()
+    })
+
+    let modalContener = document.querySelector(".modal-contener")
+    modalContener.addEventListener ("click", (event) => {
+        event.stopPropagation()
+    })
+
+    let closeButton = document.querySelector(".modal-close-button")
+    closeButton.addEventListener ("click", (event) => {
+        event.preventDefault()
+        closeModal()
+    })
+} 
 
 
 
@@ -155,11 +230,18 @@ function editionModeDisplay () {
     introButtonContener.innerHTML = `
         <button id="intro-edition" class="edition-button pointer"><i class="fa-regular fa-pen-to-square"></i>modifier</button>`
 
-    // Display of the portfolio edition button
+    // Display of the portfolio edition button and modal
     let portfolioButtonContener = document.querySelector(".button-portfolio-edition-contener")
     portfolioButtonContener.classList.add("button-portfolio-edition-contener-display")
     portfolioButtonContener.innerHTML = `
-        <button id="portfolio-edition" class="edition-button pointer"><i class="fa-regular fa-pen-to-square"></i>modifier</button>`
+        <a id="portfolio-edition" class="edition-button pointer" href="#modal"><i class="fa-regular fa-pen-to-square"></i>modifier</a>`
+
+    // Adding the listener event to display modal
+    let portfolioButton = document.getElementById("portfolio-edition")
+    portfolioButton.addEventListener ("click", (event) => {
+        event.preventDefault()
+        openModal()
+    })
 
     // Hidden of the login link
     let loginLink = document.querySelector(".login-link")
@@ -169,8 +251,8 @@ function editionModeDisplay () {
     let logoutLink = document.querySelector(".logout-link")
     logoutLink.classList.add("logout-link-display")
     logoutLink.addEventListener ("click", () => {
-        console.log("clear token")
         clearToken()
+        window.location.href="./index.html"
     })
 }
 

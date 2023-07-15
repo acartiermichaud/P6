@@ -321,6 +321,113 @@ li:hover,
 }
 
 
+/* Modal */
+.modal-hidden {
+	display: none;
+}
+
+.modal-display {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.3);
+}
+
+.modal-contener {
+	width: 630px;
+	height: 731px;
+	background-color: white;
+	border-radius: 10px;
+	overflow: auto;
+}
+
+.contener-button {
+	display: flex;
+	justify-content: right;
+	padding: 30px 30px 15px 0;
+}
+
+.modal-close-button {
+	border: none;
+	background-color: transparent;
+}
+
+.modal-title {
+	font-family: 'Work Sans';
+	font-size: 26px;
+	font-weight: 400;
+}
+
+#images-contener {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	padding: 50px 0;
+	border-bottom: 1px solid #B3B3B3;
+	margin: 0 105px;
+	gap: 8px;
+}
+
+.modal-figure {
+	position: relative;
+}
+
+.modal-image {
+	height: 102.57px;
+	z-index: 1;
+}
+
+.modal-text-image {
+	font-family: 'Work Sans';
+	font-size: 12px;
+	font-weight: 400;
+	text-align: left;
+	padding: 2px 0 4px 0;
+}
+
+.icons-contener {
+	display: flex;
+	justify-content: end;
+	position: absolute;
+	top : 0;
+	right: 0;
+	z-index: 2;
+	gap: 3px;
+	margin: 5px;
+}
+
+.icons-contener i {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 17px;
+	height: 17px;
+	color: white;
+	background-color: black;
+	border-radius: 2px;
+}
+
+#portfolio-title .modal-button {
+	display: block;
+	border: none;
+	width: 237px;
+}
+
+.gallery-delete-link {
+	display: block;
+	color: #D65353;
+	font-family: 'Syne';
+	font-weight: 400;
+	font-size: 14px;
+	margin-top: -15px;
+}
+
+
 /* Section "contact" */
 #contact, 
 #login {
@@ -386,7 +493,8 @@ li:hover,
 }
 
 #contact input[type="submit"],
-#login input[type="submit"] {
+#login input[type="submit"],
+.modal-button {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 14px;
@@ -397,6 +505,7 @@ li:hover,
 	height: 36px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
 }
 
 #login a {
