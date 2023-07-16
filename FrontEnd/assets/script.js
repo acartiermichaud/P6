@@ -1,44 +1,19 @@
-// Global variables *****************************************
-let worksJson = null
-let works = ""
-
-let categories = ""
-
-let filterId = 0
-
-let token = null
-
-
-
 // Functions ***********************************************
 
-// Recovery of works
-async function worksRecovery () {
-    worksJson = window.localStorage.getItem("works");
+// Display and filtering of works in HTML page
+async function worksDisplay (id) {
 
-    if (worksJson === null) {
-        const worksResponse = await fetch("http://localhost:5678/api/works")
-        works = await worksResponse.json()
-
-        // Local storage of works
-        worksJson = JSON.stringify(works);
-        window.localStorage.setItem("works", worksJson);
-    }
-    else {
-        works = JSON.parse(worksJson);
-    }
-}
-
-
-
-// Display of works in HTML page
-function worksDisplay (id) {
+    // Recovery of works
+    const worksResponse = await fetch("http://localhost:5678/api/works")
+    let works = await worksResponse.json()
+    
     let gallery = document.querySelector(".gallery")
 
     for (let i = 0; i < works.length; i++) {
 
         if ((id === 0) || (id === works[i].category.id)) {
             let figure = document.createElement("figure")
+            figure.classList.add("page-figure")
             gallery.appendChild(figure)
 
             let img = document.createElement("img")
@@ -55,13 +30,11 @@ function worksDisplay (id) {
 }
 
 
-
 // Deletion of all works in HTML page
-function worksDelete () {
+function worksPageHTMLDelete () {
     let gallery = document.querySelector(".gallery")
     gallery.innerHTML = ""
 }
-
 
 
 // Update of filters' style
@@ -72,7 +45,6 @@ function filtersStyleUpdate(id) {
 	let newSelectedFilter = document.getElementById("filter_"+id)
 	newSelectedFilter.classList.add("selected-filter")
 }
-
 
 
 // Display of category filters
@@ -107,8 +79,9 @@ async function filtersDisplay () {
         let filterText = document.createTextNode(text)
         filter.appendChild(filterText)
 
-        filter.addEventListener ("click", () => {
-            worksDelete()
+        filter.addEventListener ("click", (event) => {
+            event.preventDefault()
+            worksPageHTMLDelete()
             worksDisplay(id)
             filtersStyleUpdate(id)
         })
@@ -116,23 +89,24 @@ async function filtersDisplay () {
 }
 
 
-
 // Recovery of token
 function tokenRecovery () {
     const tokenJson = window.localStorage.getItem("token");
 
     if (tokenJson !== null) {
-        token = JSON.parse(tokenJson);
+        return JSON.parse(tokenJson);
+    }
+    else {
+        return null
     }
 }
-
 
 
 // Clear token
 function clearToken() {
     window.localStorage.removeItem("token")
+    token = null
 }
-
 
 
 // Close the modal
@@ -147,9 +121,69 @@ function closeModal() {
 }
 
 
+// Delete one project
+async function deleteProject(e) {
+    // Recovery of the selected project
+    let selectedFigure = e.target.parentNode.parentNode
+    let selectedImage = selectedFigure.childNodes[0]
+    let selectedSrc = selectedImage.src
+
+    // Recovery of works
+    const worksResponse = await fetch("http://localhost:5678/api/works")
+    let works = await worksResponse.json()
+    
+    let indexBD = null
+    let indexHTML = null
+    for (let i = 0; i < works.length; i++) {
+        if (selectedSrc === works[i].imageUrl) {
+            indexHTML = i
+            indexBD = works[i].id
+        }
+    }
+
+    // Delete in data base
+    const deleteResponse = await fetch("http://localhost:5678/api/works/"+indexBD, {
+        method: "DELETE",
+        headers: {"Authorization": `Bearer ${token}`}
+    })
+    console.log(deleteResponse.status)
+
+    // Delete in modal
+    selectedFigure.remove()
+
+    // Delete in HYML page
+    let pageFigures = document.querySelectorAll(".page-figure")
+    pageFigures[indexHTML].remove()
+}
+
+
+// Delete all projects
+async function deleteAllProjects() {
+    // Recovery of works
+    const worksResponse = await fetch("http://localhost:5678/api/works")
+    let works = await worksResponse.json()
+
+    // Delete in data base
+    for (let i = 0; i < works.length; i++) {
+        let indexBD = works[i].id
+        const deleteResponse = await fetch("http://localhost:5678/api/works/"+indexBD, {
+            method: "DELETE",
+            headers: {"Authorization": `Bearer ${token}`}
+        })
+        console.log(deleteResponse.status)
+    }
+
+    // Delete in modal
+    let imagesContener = document.getElementById("images-contener")
+    imagesContener.innerHTML = ``
+
+    // Delete in HTML page
+    worksPageHTMLDelete()
+}
+
 
 // Open the modal
-function openModal() {
+async function openModal() {
     let modal = document.getElementById("modal")
     modal.classList.remove("modal-hidden")
     modal.classList.add("modal-display")
@@ -167,8 +201,11 @@ function openModal() {
 		</div>`
     
     // Recovery of works' images
+    const worksResponse = await fetch("http://localhost:5678/api/works")
+    let works = await worksResponse.json()
+
     let imagesContener = document.getElementById("images-contener")
-    if (works !== "") {
+    if (works !== null) {
         for (let i = 0; i < works.length; i++) {
             let figure = document.createElement("figure")
             figure.classList.add("modal-figure")
@@ -190,8 +227,14 @@ function openModal() {
             iconsContener.classList.add("icons-contener")
             figure.appendChild(iconsContener)
             iconsContener.innerHTML = `
-                <i class="fa-solid fa-arrows-up-down-left-right fa-xs"></i>
-                <i class="fa-solid fa-trash-can fa-xs"></i>`
+                <i class="pointer fa-solid fa-arrows-up-down-left-right fa-xs"></i>
+                <i id="delete-icon_${i}" class="pointer fa-solid fa-trash-can fa-xs"></i>`
+
+            let deleteIcon = document.getElementById("delete-icon_"+i)
+            deleteIcon.addEventListener ("click", (event) => {
+                event.preventDefault()
+                deleteProject(event)
+            })
         }
     }
 
@@ -209,6 +252,12 @@ function openModal() {
     closeButton.addEventListener ("click", (event) => {
         event.preventDefault()
         closeModal()
+    })
+
+    let deleteGallery = document.querySelector(".gallery-delete-link")
+    deleteGallery.addEventListener ("click", (event) => {
+        event.preventDefault()
+        deleteAllProjects()
     })
 } 
 
@@ -260,8 +309,11 @@ function editionModeDisplay () {
 
 // Main ****************************************************
 
+// Display of works in HTML page
+worksDisplay(0)
+
 // Recovery of token
-tokenRecovery () 
+let token = tokenRecovery () 
 
 if (token === null) {
     // Display of category filters
@@ -271,9 +323,3 @@ else {
     // Display of the edition mode
     editionModeDisplay ()
 }
-
-// Recovery of works
-worksRecovery()
-
-// Display of works in HTML page
-worksDisplay(filterId)
