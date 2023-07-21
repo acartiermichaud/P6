@@ -339,6 +339,7 @@ async function openForm() {
     form.setAttribute("id", "modal-form")
     form.method = "post"
     form.action = "#"
+    form.enctype = "multipart/form-data"
     formContener.appendChild(form)
 
     // Download file button
@@ -501,44 +502,62 @@ async function openForm() {
         }
     
         // Save new project
+        const formData = new FormData();
+        formData.append("image", selectedFile)
+        formData.append("title", newImageTitleInput.value)
+        formData.append("category", newCategory)
 
+        try{
+            const newProjectResponse = await fetch("http://localhost:5678/api/works", {
+                method: "POST",
+                headers: {"Authorization": `Bearer ${token}`},
+                body: formData
+            })
+            
+            if (newProjectResponse.status === 201) {
+                // Recovery of last added project
+                const worksResponse = await fetch("http://localhost:5678/api/works")
+                let works = await worksResponse.json()
 
-        // let formData = new FormData();
-        // formData.append("image", URL.createObjectURL(selectedFile))
-        // formData.append("type", selectedFile.type)
-        // formData.append("title", newImageTitleInput.value)
-        // formData.append("category", newCategory)
-        
-        // ////////////////////////////
-        // for (var pair of formData.entries()) {
-        //     console.log(pair[0]+ ', ' + pair[1]); 
-        // }
-        // ///////////////////////////
-        
-        // let request = new XMLHttpRequest();
-        // request.open("POST", "http://localhost:5678/api/works");
-        // request.setRequestHeader("Content-Type", "multipart/form-data");
-        // request.send(formData);
+                // Adding in HTML page
+                let gallery = document.querySelector(".gallery")
 
+                let figure = document.createElement("figure")
+                figure.classList.add("page-figure")
+                gallery.appendChild(figure)
 
-        jsonFormData = {
-            "image" : URL.createObjectURL(selectedFile),
-            "type" : selectedFile.type,
-            "title" : newImageTitleInput.value,
-            "category" : newCategory
+                let img = document.createElement("img")
+                img.src = works[works.length-1].imageUrl
+                img.alt = works[works.length-1].title
+                figure.appendChild(img)
+
+                let figcaption = document.createElement("figcaption")
+                figure.appendChild(figcaption)
+                let textFigure = document.createTextNode(works[works.length-1].title)
+                figcaption.appendChild(textFigure)
+
+                // Back to the first modal with success message
+                closeModal()
+                openModal()
+                creationMessageDisplay()
+            }
         }
-
-        const newProjectResponse = await fetch("http://localhost:5678/api/works", {
-            method: "POST",
-            headers: {"Authorization": `Bearer ${token}`,
-                        "Content-Type": "multipart/form-data"},
-            body: jsonFormData
-        })
-        console.log(newProjectResponse.status)
-
+        catch (error) {
+            console.error("Une erreur est survenue :", error);
+        }   
     })
 }
 
+
+function creationMessageDisplay () {
+    let imagesContener = document.getElementById("images-contener")
+
+    let messageText = document.createElement("p")
+    messageText.classList.add("text-message")
+    messageText.classList.add("text-message-position")
+    messageText.innerHTML = "Projet créé avec succès."
+    imagesContener.appendChild(messageText)
+}
 
 // Main ****************************************************
 

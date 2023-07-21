@@ -555,7 +555,8 @@ li:hover,
 }
 
 .download-button-contener .file-text-error,
-#modal-form .title-text-error {
+#modal-form .title-text-error,
+#images-contener .text-message {
 	position : absolute;
 	left: 0;
 	display: block; 
@@ -571,6 +572,22 @@ li:hover,
 
 #modal-form .title-text-error-position {
 	top: 265px;
+}
+
+@keyframes message-animation {
+	0% {
+	  opacity: 1;
+	}
+	100% {
+	  opacity: 0;
+	}
+  }
+
+#images-contener .text-message-position {
+	top : 665px;
+	left : 502px;
+	opacity: 1;
+	animation: message-animation 300ms 1000ms forwards;
 }
 
 
