@@ -1,7 +1,8 @@
-/* http://meyerweb.com/eric/tools/css/reset/
+/*********************************************************************************************************
+	http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
    License: none (public domain)
-*/
+**********************************************************************************************************/
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -25,13 +26,13 @@ time, mark, audio, video {
 }
 
 
-/* HTML5 display-role reset for older browsers */
+/* HTML5 display-role reset for older browsers ***********************************************************/
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 
-html{
+html {
 	background-color: #FFFEF8;
 }
 
@@ -59,7 +60,7 @@ table {
 }
 
 
-/** end reset css**/
+/* end reset css *****************************************************************************************/
 .main-contener {
 	max-width: 1140px;
 	margin: auto;
@@ -95,21 +96,12 @@ h2{
 	color: #1D6154;
 }
 
-.edition-button {
-	background-color: transparent;
-	color: black;
-	border: none;
-	font-family: 'Work Sans';
-	font-size: 14px;
-	font-weight: 400;
-}
-
-.edition-button i { 
-	padding-right: 10px;
+.pointer {
+    cursor: pointer;
 }
 
 
-/* Banner of the edition mode */
+/* Bar of the edition mode *******************************************************************************/
 .edition-bar {
 	display: none;
 }
@@ -147,7 +139,22 @@ h2{
 }
 
 
-/* Header */
+/* Edition buttons ***************************************************************************************/
+.edition-button {
+	background-color: transparent;
+	color: black;
+	border: none;
+	font-family: 'Work Sans';
+	font-size: 14px;
+	font-weight: 400;
+}
+
+.edition-button i { 
+	padding-right: 10px;
+}
+
+
+/* Header ************************************************************************************************/
 header {
 	display: flex;
 	justify-content: space-between;
@@ -199,12 +206,8 @@ li:hover,
 	color: #B1663C;
 }
 
-.pointer {
-    cursor: pointer;
-}
 
-
-/* Section "introduction" */
+/* Section "introduction" ********************************************************************************/
 #introduction {
 	display: flex;
 	flex-direction: column;
@@ -212,20 +215,11 @@ li:hover,
 	align-items: flex-start ;
 }
 
-.introduction-contener {
+#introduction .introduction-contener {
 	display: flex;
 	align-items: center;
 	padding: 95px;
 	column-gap: 70px;
-}
-
-.button-intro-edition-contener {
-	display: none;
-}
-
-.button-intro-edition-contener-display {
-	display: block;
-	margin: -80px 0 60px 95px;
 }
 
 #introduction figure {
@@ -254,8 +248,17 @@ li:hover,
 	margin-bottom: 15px;
 }
 
+#introduction .edition-intro-button-contener {
+	display: none;
+}
 
-/* Section "portfolio" */
+#introduction .edition-intro-button-contener-display {
+	display: block;
+	margin: -80px 0 60px 95px;
+}
+
+
+/* Section "portfolio" ***********************************************************************************/
 #portfolio-title {
 	display: flex;
 	justify-content: center;
@@ -264,15 +267,19 @@ li:hover,
 	margin-bottom: 1em;
 }
 
-.button-portfolio-edition-contener {
+#portfolio-title .edition-portfolio-button-contener {
 	display: none;
 }
 
-.button-portfolio-edition-contener-display {
+#portfolio-title .edition-portfolio-button-contener-display {
 	display: block;
 	position: absolute;
 	margin-left: 330px;
 	margin-top: 9px;
+}
+
+#portfolio-title .edition-portfolio-button-contener-display a {
+	text-decoration: none;
 }
 
 .filters-contener {
@@ -282,7 +289,7 @@ li:hover,
 	margin: 50px 0;
 }
 
-.filter {
+.filters-contener .filter {
 	color: #1D6154;
 	font-family: 'Syne';
 	font-size: 16px;
@@ -294,7 +301,7 @@ li:hover,
 	padding: 0 20px;
 }
 
-.selected-filter {
+.filters-contener .selected-filter {
 	color: white;
 	background-color: #1D6154;
 }
@@ -321,7 +328,7 @@ li:hover,
 }
 
 
-/* Modal */
+/* Modal *************************************************************************************************/
 .modal-hidden {
 	display: none;
 }
@@ -340,13 +347,15 @@ li:hover,
 
 .modal-contener {
 	width: 630px;
-	min-height: 731px;
+	height: 731px;
 	background-color: white;
 	border-radius: 10px;
-	overflow: auto;
+	overflow: hidden;
 }
 
-.contener-button {
+
+/* Modal top buttons */
+.button-contener {
 	display: flex;
 	justify-content: right;
 	padding: 30px 30px 15px 0;
@@ -358,19 +367,29 @@ li:hover,
 	background-color: transparent;
 }
 
+
+/* Modal title */
 .modal-title {
 	font-family: 'Work Sans';
 	font-size: 26px;
 	font-weight: 400;
+	padding-bottom: 50px;
 }
 
+
+/* Modal images */
 #images-contener {
 	display: flex;
 	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
 	flex-wrap: wrap;
-	padding: 50px 0;
+	width: 435px;
+	height: 385px;
+	overflow-y: auto;
+	padding-bottom: 50px;
 	border-bottom: 1px solid #B3B3B3;
-	margin: 0 105px;
+	margin: 0 100px;
 	gap: 8px;
 }
 
@@ -379,7 +398,9 @@ li:hover,
 }
 
 .modal-image {
+	width: 76.59px;
 	height: 102.57px;
+	object-fit: contain;
 	z-index: 1;
 	cursor: pointer;
 }
@@ -392,6 +413,8 @@ li:hover,
 	padding: 2px 0 4px 0;
 }
 
+
+/* Modal image icons */
 .icons-contener {
 	display: flex;
 	justify-content: end;
@@ -422,12 +445,16 @@ li:hover,
 	display: flex;
 }
 
+
+/* Adding image button  */
 #portfolio-title .modal-button {
 	display: block;
 	border: none;
 	width: 237px;
 }
 
+
+/* Deletion gallery link  */
 .gallery-delete-link {
 	display: block;
 	color: #D65353;
@@ -438,15 +465,7 @@ li:hover,
 }
 
 
-/* Modal form */
-.form-modal-contener {
-	width: 630px;
-	min-height: 670px;
-	background-color: white;
-	border-radius: 10px;
-	overflow: auto;
-}
-
+/* Modal form ********************************************************************************************/
 #modal-form {
 	display: flex;
 	flex-direction: column;
@@ -455,13 +474,37 @@ li:hover,
 	text-align: left;
 }
 
-.form-contener-button {
+#modal-form label {
+	color: #3D3D3D;
+	font-family: 'Work Sans';
+	font-weight: 500;
+	font-size: 14px;
+	padding-top: 20px;
+}
+
+#modal-form select  {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	background-color: white;
+	color: #3D3D3D;
+	font-family: 'Work Sans';
+	font-weight: 500;
+	font-size: 14px;
+}
+
+
+/* Back and close buttons contener */
+.form-button-contener {
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-between;
 	padding: 30px 30px 15px 28px;
 }
 
+
+/* Download image area */
 .download-button-contener {
 	position: relative;
 	display: flex;
@@ -474,7 +517,7 @@ li:hover,
 	margin-top: -15px;
 }
 
-.download-image-icon{
+.download-button-contener .download-image-icon{
 	width: 58px;
 }
 
@@ -483,6 +526,11 @@ li:hover,
 	font-family: 'Work Sans';
 	font-weight: 400;
 	font-size: 10px;
+}
+
+.download-button-contener .new-image {
+	height: 169px;
+	width: auto;
 }
 
 #modal-form .download-image-button-label {
@@ -507,43 +555,20 @@ li:hover,
 	display: none;
 }
 
-.new-image {
-	height: 169px;
-}
 
-#modal-form label {
-	color: #3D3D3D;
-	font-family: 'Work Sans';
-	font-weight: 500;
-	font-size: 14px;
-	padding-top: 20px;
-}
-
-#modal-form select  {
-	height: 50px;
-	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-	background-color: white;
-	color: #3D3D3D;
-	font-family: 'Work Sans';
-	font-weight: 500;
-	font-size: 14px;
-}
-
+/* Validate button */
 .modal-form-button {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 14px;
 	color: white;
-	margin : 30px auto 50px auto;
+	margin : 40px auto;
 	width: 237px;
 	height: 36px;
 	text-align: center;
 	border-radius: 60px ;
 	border: none;
 	cursor: pointer;
-	border: none;
 }
 
 .grey-modal-form-button {
@@ -554,9 +579,13 @@ li:hover,
 	background-color: #1D6154;
 }
 
+
+/* Modal messages */
 .download-button-contener .file-text-error,
 #modal-form .title-text-error,
-#images-contener .text-message {
+#images-contener .text-message,
+#login-form .email-text-error,
+#login-form .pwd-text-error {
 	position : absolute;
 	left: 0;
 	display: block; 
@@ -566,6 +595,8 @@ li:hover,
 	font-weight: 500;
 }
 
+
+/* Modal error messages */
 .download-button-contener .file-text-error-position {
 	bottom: -20px;
 }
@@ -574,6 +605,16 @@ li:hover,
 	top: 265px;
 }
 
+#login-form .email-text-error {
+	top: 112px;
+}
+
+#login-form .pwd-text-error {
+	top: 220px;
+}
+
+
+/* Modal success message */
 @keyframes message-animation {
 	0% {
 	  opacity: 1;
@@ -584,14 +625,14 @@ li:hover,
   }
 
 #images-contener .text-message-position {
-	top : 665px;
-	left : 502px;
+	top : 710px;
+	left : 500px;
 	opacity: 1;
 	animation: message-animation 300ms 1000ms forwards;
 }
 
 
-/* Section "contact" */
+/* Section "contact" and login page **********************************************************************/
 #contact, 
 #login {
 	width: 50%;
@@ -612,11 +653,11 @@ li:hover,
 }
 
 #contact h2,
-#login h2{
+#login h2 {
 	margin-bottom: 20px;
 }
 
-#contact p{
+#contact p {
 	color: #3D3D3D;
 	font-family: 'Work Sans';
 	font-size: 16px;
@@ -630,6 +671,10 @@ li:hover,
 	margin-top: 10px;
 	display: flex;
 	flex-direction: column;
+}
+
+#login-form {
+	position: relative;
 }
 
 #contact input,
@@ -665,7 +710,7 @@ li:hover,
 	font-size: 14px;
 	color: white;
 	background-color: #1D6154;
-	margin : 40px auto ;
+	margin : 40px auto;
 	width: 179px;
 	height: 36px;
 	text-align: center;
@@ -673,6 +718,8 @@ li:hover,
 	cursor: pointer;
 }
 
+
+/* Login page link */
 #login a {
 	color: #3D3D3D;
 	font-family: 'Work Sans';
@@ -681,12 +728,16 @@ li:hover,
 	margin-top: -10px;
 }
 
-#login .hidden-error-message {
+
+/* Login page error message */
+#login .error-message-hidden {
 	display: none;
 }
 
-#login .display-error-message {
+#login .error-message-display {
 	display: block; 
+	position: absolute;
+	top: 230px;
 	color: red;
 	font-family: 'Work Sans';
 	font-size: 14px;
@@ -694,7 +745,7 @@ li:hover,
 }
 
 
-/* Footer */
+/* Footer ************************************************************************************************/
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
