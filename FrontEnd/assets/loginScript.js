@@ -13,7 +13,9 @@ async function loginFormSetting () {
 
         const errorContener = document.getElementById("error-message")
         if(errorContener.firstChild) {
-            errorContener.removeChild(errorContener.firstChild)
+            errorContener.innerHTML=``
+            errorContener.classList.remove("error-message-display")
+            errorContener.classList.add("error-message-hidden")
         }
     })
 
@@ -28,7 +30,9 @@ async function loginFormSetting () {
 
         const errorContener = document.getElementById("error-message")
         if(errorContener.firstChild) {
-            errorContener.removeChild(errorContener.firstChild)
+            errorContener.innerHTML=``
+            errorContener.classList.remove("error-message-display")
+            errorContener.classList.add("error-message-hidden")
         }
     })
 
@@ -97,13 +101,21 @@ async function loginFormSetting () {
                     const errorContener = document.getElementById("error-message")
     
                     if (errorContener.firstChild) {
-                        errorContener.removeChild(errorContener.firstChild)
+                        errorContener.innerHTML=``
+                    }
+                    else {
+                        errorContener.classList.remove("error-message-hidden")
+                        errorContener.classList.add("error-message-display")
                     }
                     
-                    const errorMessage = document.createTextNode("Erreur dans l’identifiant ou le mot de passe.")
-                    errorContener.appendChild(errorMessage)
-                    errorContener.classList.remove("error-message-hidden")
-                    errorContener.classList.add("error-message-display")
+                    let errorMessageText = ""
+                    if (response.status === 401) {
+                        errorMessageText = "Connexion non autorisée."
+                    }
+                    if (response.status === 404) {
+                        errorMessageText = "Utilisateur inconnu."
+                    }
+                    errorContener.innerHTML = `${errorMessageText}<br>Erreur dans l’identifiant ou le mot de passe.`
                 }
             }
     

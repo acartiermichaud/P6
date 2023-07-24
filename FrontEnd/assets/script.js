@@ -174,7 +174,7 @@ async function openModal() {
             <div class="button-contener">
                 <button class="modal-close-button pointer"><i class="fa-solid fa-xmark fa-xl"></i></button>
             </div>
-			<h3 class="modal-title">Galerie photo</h3>
+			<h3 id="modal-title">Galerie photo</h3>
             <div id="images-contener"></div>
             <button type="submit" id="add-image-button" class="modal-button">Ajouter une photo</button>
             <a class="gallery-delete-link pointer">Supprimer la galerie</a>
@@ -318,7 +318,18 @@ async function deleteProject(e) {
                         pageFigures[indexHTML].remove()
 
                         // Display success message
-                        successMessageDisplay("delete")
+                        apiMessageDisplay("Projet supprimé avec succès.")
+                    }
+                    else {
+                        let errorMessage = ""
+                        if (deleteResponse.status === 401) {
+                            errorMessage = "Requête non autorisée."
+                        }
+
+                        if (deleteResponse.status === 500) {
+                            errorMessage = "Erreur inattendue."
+                        }
+                        apiMessageDisplay(errorMessage)
                     }
                 }
 
@@ -352,7 +363,7 @@ async function deleteAllProjects() {
                 const token = JSON.parse(tokenJson);
 
                 // Delete in data base
-                let deletion = false
+                let requestStatus = null
                 for (let i = 0; i < works.length; i++) {
                     const indexBD = works[i].id
                     
@@ -362,9 +373,7 @@ async function deleteAllProjects() {
                             headers: {"Authorization": `Bearer ${token}`}
                         })
 
-                        if ((deleteResponse.status === 200) || (deleteResponse.status === 204)) {
-                            deletion = true
-                        }
+                        requestStatus = deleteResponse.status
                     }
 
                     catch (error) {
@@ -372,7 +381,7 @@ async function deleteAllProjects() {
                     }
                 }
 
-                if (deletion) {
+                if ((requestStatus === 200) || (requestStatus === 204)) {
                     // Delete in modal
                     const imagesContener = document.getElementById("images-contener")
                     imagesContener.innerHTML = ``
@@ -381,7 +390,18 @@ async function deleteAllProjects() {
                     worksPageHTMLDelete()
 
                     // Display success message
-                    successMessageDisplay("deleteAll")
+                    apiMessageDisplay("Projets supprimés avec succès.")
+                }
+                else {
+                    let errorMessage = ""
+                    if (deleteResponse.status === 401) {
+                        errorMessage = "Requête non autorisée."
+                    }
+
+                    if (deleteResponse.status === 500) {
+                        errorMessage = "Erreur inattendue."
+                    }
+                    apiMessageDisplay(errorMessage)
                 }
             }
         }
@@ -415,7 +435,7 @@ async function openForm() {
     })
     
     // Display title
-    const title = document.querySelector(".modal-title")
+    const title = document.getElementById("modal-title")
     title.firstChild.nodeValue = "Ajout photo"
 
     // Display form
@@ -632,7 +652,22 @@ async function openForm() {
                                         // Back to the first modal with success message
                                         closeModal()
                                         openModal()
-                                        successMessageDisplay("add")
+                                        apiMessageDisplay("Projet créé avec succès.")
+                                    }
+                                    else {
+                                        let errorMessage = ""
+                                        if (newProjectResponse.status === 400) {
+                                            errorMessage = "Requête incorrecte."
+                                        }
+            
+                                        if (newProjectResponse.status === 401) {
+                                            errorMessage = "Requête non autorisée."
+                                        }
+            
+                                        if (newProjectResponse.status === 500) {
+                                            errorMessage = "Erreur inattendue."
+                                        }
+                                        apiMessageDisplay(errorMessage)
                                     }                       
                                 }
         
@@ -658,23 +693,14 @@ async function openForm() {
 
 
 // Display success messages *******************************************************************************
-function successMessageDisplay (action) {
-    const imagesContener = document.getElementById("images-contener")
+function apiMessageDisplay (message) {
+    const imagesContener = document.getElementById("modal-title")
 
     const messageText = document.createElement("p")
     messageText.classList.add("text-message")
     messageText.classList.add("text-message-position")
+    messageText.innerHTML = message
 
-    if (action === "add") {
-        messageText.innerHTML = "Projet créé avec succès."
-    }
-    if ( action === "delete") {
-        messageText.innerHTML = "Projet supprimé avec succès."
-    }
-    if ( action === "deleteAll") {
-        messageText.innerHTML = "Projets supprimés avec succès."
-    }
-    
     imagesContener.appendChild(messageText)
 }
 

@@ -369,7 +369,7 @@ li:hover,
 
 
 /* Modal title */
-.modal-title {
+#modal-title {
 	font-family: 'Work Sans';
 	font-size: 26px;
 	font-weight: 400;
@@ -583,7 +583,7 @@ li:hover,
 /* Modal messages */
 .download-button-contener .file-text-error,
 #modal-form .title-text-error,
-#images-contener .text-message,
+#modal-title .text-message,
 #login-form .email-text-error,
 #login-form .pwd-text-error {
 	position : absolute;
@@ -624,7 +624,7 @@ li:hover,
 	}
   }
 
-#images-contener .text-message-position {
+#modal-title .text-message-position {
 	top : 710px;
 	left : 500px;
 	opacity: 1;
@@ -737,7 +737,7 @@ li:hover,
 #login .error-message-display {
 	display: block; 
 	position: absolute;
-	top: 230px;
+	top: 220px;
 	color: red;
 	font-family: 'Work Sans';
 	font-size: 14px;
