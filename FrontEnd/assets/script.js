@@ -140,7 +140,7 @@ function editionModeDisplay () {
             openModal()
         })
 
-        // Hidden of the login link
+        // Hidding of the login link
         const loginLink = document.querySelector(".login-link")
         loginLink.classList.add("login-link-hidden")
 
@@ -161,7 +161,7 @@ function editionModeDisplay () {
 }
 
 
-// Open the modal ****************************************************************************************
+// Opening of the modal ****************************************************************************************
 async function openModal() {
     const modal = document.getElementById("modal")
     modal.classList.remove("modal-hidden")
@@ -261,7 +261,7 @@ async function openModal() {
 } 
 
 
-// Close the modal ***************************************************************************************
+// Closing of the modal ***************************************************************************************
 function closeModal() {
     const modal = document.getElementById("modal")
     modal.classList.remove("modal-display")
@@ -273,7 +273,7 @@ function closeModal() {
 }
 
 
-// Delete one project ************************************************************************************
+// Deletion of one project ************************************************************************************
 async function deleteProject(e) {
     // Recovery of the selected project
     const selectedFigure = e.target.parentNode.parentNode
@@ -303,17 +303,17 @@ async function deleteProject(e) {
                 const token = JSON.parse(tokenJson);
 
                 try {
-                    // Delete in data base
+                    // Deletion in data base
                     const deleteResponse = await fetch("http://localhost:5678/api/works/"+indexBD, {
                         method: "DELETE",
                         headers: {"Authorization": `Bearer ${token}`}
                     })
 
                     if ((deleteResponse.status === 200) || (deleteResponse.status === 204)) {
-                        // Delete in modal
+                        // Deletion in modal
                         selectedFigure.remove()
 
-                        // Delete in HYML page
+                        // Deletion in HTML page
                         const pageFigures = document.querySelectorAll(".page-figure")
                         pageFigures[indexHTML].remove()
 
@@ -321,6 +321,7 @@ async function deleteProject(e) {
                         apiMessageDisplay("Projet supprimé avec succès.")
                     }
                     else {
+                        // Display error message
                         let errorMessage = ""
                         if (deleteResponse.status === 401) {
                             errorMessage = "Requête non autorisée."
@@ -346,7 +347,7 @@ async function deleteProject(e) {
 }
 
 
-// Delete all projects ***********************************************************************************
+// Deletion of all projects ***********************************************************************************
 async function deleteAllProjects() {
 
     try {
@@ -362,7 +363,7 @@ async function deleteAllProjects() {
             if (tokenJson !== null) {
                 const token = JSON.parse(tokenJson);
 
-                // Delete in data base
+                // Deletion in data base
                 let requestStatus = null
                 for (let i = 0; i < works.length; i++) {
                     const indexBD = works[i].id
@@ -382,17 +383,18 @@ async function deleteAllProjects() {
                 }
 
                 if ((requestStatus === 200) || (requestStatus === 204)) {
-                    // Delete in modal
+                    // Deletion in modal
                     const imagesContener = document.getElementById("images-contener")
                     imagesContener.innerHTML = ``
 
-                    // Delete in HTML page
+                    // Deletion in HTML page
                     worksPageHTMLDelete()
 
                     // Display success message
                     apiMessageDisplay("Projets supprimés avec succès.")
                 }
                 else {
+                    // Display error message
                     let errorMessage = ""
                     if (deleteResponse.status === 401) {
                         errorMessage = "Requête non autorisée."
@@ -413,12 +415,12 @@ async function deleteAllProjects() {
 }
 
 
-// Open modal form to add image **************************************************************************
+// Opening of modal form to add image **************************************************************************
 async function openForm() {
     const formContener = document.getElementById("images-contener")
     formContener.innerHTML = ``
 
-    // Add back icon
+    // Adding of back icon
     const buttonsContener = document.querySelector(".button-contener")
     buttonsContener.classList.remove("button-contener")
     buttonsContener.classList.add("form-button-contener")
@@ -572,7 +574,7 @@ async function openForm() {
                 }
             })
 
-            // Delete previous link
+            // Deletion of previous link
             const previousLink = document.querySelector(".gallery-delete-link")
             previousLink.remove()
 
@@ -581,7 +583,7 @@ async function openForm() {
             modalFormButton.addEventListener ("click", async (event) => {
                 event.preventDefault()
 
-                // Checking file
+                // File checking
                 if (selectedFile === null) {
                     if(!document.querySelector(".file-text-error-position")) {
                         const fileErrorText = document.createElement("p")
@@ -592,7 +594,7 @@ async function openForm() {
                     }             
                 }
 
-                // Checking title
+                // Title checking
                 if (newImageTitleInput.value === "") {
                     if(!document.querySelector(".title-text-error-position")) {
                         const TitleErrorText = document.createElement("p")
@@ -604,7 +606,7 @@ async function openForm() {
                 }
 
                 if ((selectedFile !== null) && (newImageTitleInput.value !== "") ) {
-                    // Save new project
+                    // Saving data
                     const formData = new FormData();
                     formData.append("image", selectedFile)
                     formData.append("title", newImageTitleInput.value)
@@ -617,7 +619,7 @@ async function openForm() {
                         const token = JSON.parse(tokenJson);
 
                         try {
-                            // Save the new work in data base
+                            // Saving of the new work in data base
                             const newProjectResponse = await fetch("http://localhost:5678/api/works", {
                                 method: "POST",
                                 headers: {"Authorization": `Bearer ${token}`},
@@ -626,7 +628,7 @@ async function openForm() {
                             
                             if (newProjectResponse.status === 201) {
                                 try {
-                                    // Recovery of last added project
+                                    // Recovery of the last added project
                                     const worksResponse = await fetch("http://localhost:5678/api/works")
         
                                     if (worksResponse.status === 200) {
@@ -655,6 +657,7 @@ async function openForm() {
                                         apiMessageDisplay("Projet créé avec succès.")
                                     }
                                     else {
+                                        // Display error message 
                                         let errorMessage = ""
                                         if (newProjectResponse.status === 400) {
                                             errorMessage = "Requête incorrecte."
@@ -692,7 +695,7 @@ async function openForm() {
 }
 
 
-// Display success messages *******************************************************************************
+// Display API messages **********************************************************************************
 function apiMessageDisplay (message) {
     const imagesContener = document.getElementById("modal-title")
 

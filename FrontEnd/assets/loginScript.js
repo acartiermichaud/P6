@@ -1,8 +1,8 @@
-// Functions *********************************************************************************************
+// Function **********************************************************************************************
 
 async function loginFormSetting () {
 
-    // Adding EvenListener on email input
+    // Adding the listener event on email input
     const emailContener = document.getElementById("e-mail")
     emailContener.addEventListener ("change", (event) => {
         event.preventDefault()
@@ -19,7 +19,7 @@ async function loginFormSetting () {
         }
     })
 
-    // Adding EvenListener on pwd input
+    // Adding the listener event on pwd input
     const pwdContener = document.getElementById("pwd")
     pwdContener.addEventListener ("change", (event) => {
         event.preventDefault()
@@ -36,7 +36,7 @@ async function loginFormSetting () {
         }
     })
 
-    // Adding EventListener on submit button
+    // Adding the listener event on submit button
     const form = document.getElementById("login-form")
     form.addEventListener("submit", async function(event) {
         event.preventDefault()
@@ -45,7 +45,7 @@ async function loginFormSetting () {
         const loginEmail = emailContener.value
         const loginPwd = pwdContener.value
 
-        // E-mail check
+        // E-mail checking
         if (loginEmail === "") {
             if(!document.querySelector(".email-text-error-position")) {
                 const emailErrorText = document.createElement("p")
@@ -56,7 +56,7 @@ async function loginFormSetting () {
             }
         }
 
-        // Password check
+        // Password checking
         if (loginPwd === "") {
             if(!document.querySelector(".pwd-text-error-position")) {
                 const pwdErrorText = document.createElement("p")
@@ -98,6 +98,7 @@ async function loginFormSetting () {
 
                 // Error login
                 else {
+                    // Display of error message
                     const errorContener = document.getElementById("error-message")
     
                     if (errorContener.firstChild) {
